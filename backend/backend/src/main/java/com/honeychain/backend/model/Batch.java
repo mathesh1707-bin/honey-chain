@@ -28,4 +28,9 @@ public class Batch {
 
     private Double latitude;
     private Double longitude;
+    @Column(length = 64)
+    private String previousHash;
+
+    @Column(length = 64)
+    private String currentHash;
 }

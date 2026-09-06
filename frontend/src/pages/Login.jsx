@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import BeeLogo from "../components/Beelogo";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,8 +23,14 @@ export default function Login() {
   return (
     <div className="login-screen">
       <div className="login-hero">
-        <h1>Every jar traces back to a hive.</h1>
-        <p>Honey Chain records each batch from apiary to outlet, so a scan tells the real story behind it.</p>
+        <div className="login-hero">
+  <div className="brand-lockup">
+    <BeeLogo size={30} color="#C9922A" />
+    <span>Honey Chain</span>
+  </div>
+  <h1>Every jar traces back to a hive.</h1>
+  <p>Honey Chain records each batch from apiary to outlet, so a scan tells the real story behind it.</p>
+</div>
       </div>
       <div className="login-form-side">
         <form className="login-form-box" onSubmit={handleSubmit}>

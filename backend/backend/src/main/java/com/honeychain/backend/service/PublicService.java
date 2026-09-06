@@ -22,12 +22,13 @@ public class PublicService {
     User beekeeper = batch.getBeekeeper();
 
     return new VerifyResponse(
-            beekeeper.getFullName(),
-            beekeeper.getPlace(),
-            batch.getQuantityKg(),
-            batch.getDateCreated().toString(),
-            beekeeper.getLatitude(),
-            beekeeper.getLongitude()
-    );
-}
+        beekeeper.getFullName(),
+        beekeeper.getPlace(),
+        batch.getQuantityKg(),
+        batch.getDateCreated().toString(),
+        beekeeper.getLatitude(),
+        beekeeper.getLongitude(),
+        batch.getCurrentHash()
+        );
+    }
 }

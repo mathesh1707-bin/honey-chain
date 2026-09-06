@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import BeeLogo from "../components/Beelogo";
 
 export default function BeekeeperLayout() {
   const { logout } = useAuth();
@@ -8,7 +9,10 @@ export default function BeekeeperLayout() {
   return (
     <div className="bk-shell">
       <header className="bk-topbar">
-        <span className="brand">Honey Chain</span>
+        <div className="brand-lockup">
+          <BeeLogo size={22} color="#A6402A" />
+          <span style={{ fontFamily: "'Fraunces', serif", fontSize: "1.1rem" }}>Honey Chain</span>
+        </div>
         <nav>
           <NavLink to="/beekeeper/hive-status" className={({ isActive }) => isActive ? "active" : ""}>Hive status</NavLink>
           <NavLink to="/beekeeper/batches" className={({ isActive }) => isActive ? "active" : ""}>My batches</NavLink>

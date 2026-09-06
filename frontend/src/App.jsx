@@ -12,7 +12,7 @@ import BatchRegistration from "./pages/admin/BatchRegistration";
 import MasterRegistration from "./pages/admin/MasterRegistration";
 import HiveStatus from "./pages/beekeeper/HiveStatus";
 import MyBatches from "./pages/beekeeper/MyBatches";
-
+import ChainIntegrity from "./pages/admin/ChainIntegrity";
 export default function App() {
   return (
     <AuthProvider>
@@ -28,6 +28,7 @@ export default function App() {
             <Route path="/admin/beekeepers/:id" element={<BeekeeperDetail />} />
             <Route path="/admin/batches/new" element={<BatchRegistration />} />
             <Route path="/admin/register" element={<MasterRegistration />} />
+            <Route path="/admin/chain-integrity" element={<ChainIntegrity />} />
           </Route>
 
           <Route element={<ProtectedRoute allowedRoles={["BEEKEEPER"]}><BeekeeperLayout /></ProtectedRoute>}>

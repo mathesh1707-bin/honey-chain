@@ -12,4 +12,5 @@ public class VerifyResponse {
     private String dateCreated;
     private Double latitude;
     private Double longitude;
+    private String currentHash;
 }

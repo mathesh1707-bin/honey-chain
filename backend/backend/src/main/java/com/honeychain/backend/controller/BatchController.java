@@ -42,4 +42,8 @@ public class BatchController {
             return ResponseEntity.internalServerError().body("QR generation failed");
         }
     }
+    @GetMapping("/chain/verify")
+    public ResponseEntity<?> verifyChain() {
+        return ResponseEntity.ok(batchService.verifyChainIntegrity());
+    }
 }

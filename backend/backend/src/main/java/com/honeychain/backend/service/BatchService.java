@@ -10,7 +10,10 @@ import com.honeychain.backend.repository.UserRepository;
 import com.honeychain.backend.util.QrCodeGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import com.honeychain.backend.util.HashUtil;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +42,17 @@ public class BatchService {
     batch.setQuantityKg(request.getQuantityKg());
     batch.setDateCreated(LocalDate.now());
     batch.setQrCode("HC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+    
+    String previousHash = batchRepository.findTopByOrderByIdDesc()
+        .map(Batch::getCurrentHash)
+        .orElse("0"); // genesis value for the very first batch ever logged
+
+    String dataToHash = previousHash + beekeeper.getId() + batch.getQuantityKg()
+        + batch.getDateCreated() + batch.getQrCode();
+    String currentHash = HashUtil.sha256(dataToHash);
+
+    batch.setPreviousHash(previousHash);
+    batch.setCurrentHash(currentHash);
 
     batchRepository.save(batch);
 
@@ -59,8 +73,34 @@ public class BatchService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return batchRepository.findByBeekeeper(beekeeper);
     }
+
     public String getQrImage(String qrCode) throws Exception {
         String verifyUrl = publicBaseUrl + "/verify/" + qrCode;
         return QrCodeGenerator.generateBase64(verifyUrl, 200);
+    }
+    public List<Map<String, Object>> verifyChainIntegrity() {
+    List<Batch> batches = batchRepository.findAllByOrderByIdAsc();
+    String expectedPrevHash = "0";
+    List<Map<String, Object>> report = new ArrayList<>();
+
+    for (Batch b : batches) {
+        String recomputed = HashUtil.sha256(
+                expectedPrevHash + b.getBeekeeper().getId() + b.getQuantityKg()
+                        + b.getDateCreated() + b.getQrCode()
+        );
+
+        boolean valid = recomputed.equals(b.getCurrentHash())
+                && expectedPrevHash.equals(b.getPreviousHash());
+
+        Map<String, Object> entry = new LinkedHashMap<>();
+        entry.put("batchId", b.getId());
+        entry.put("qrCode", b.getQrCode());
+        entry.put("valid", valid);
+        report.add(entry);
+
+        expectedPrevHash = b.getCurrentHash(); // keep walking the chain even after a break, to show exactly where it happened
+    }
+
+    return report;
     }
 }

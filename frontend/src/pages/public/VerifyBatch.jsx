@@ -37,6 +37,8 @@ export default function VerifyBatch() {
           <div className="seal-row"><span className="k">Place</span><span>{batch.place}</span></div>
           <div className="seal-row"><span className="k">Quantity</span><span>{batch.quantityKg} kg</span></div>
           <div className="seal-row"><span className="k">Date</span><span>{batch.dateCreated}</span></div>
+          <div className="seal-row"><span className="k">Ledger hash</span>
+          <span style={{ fontFamily: "monospace", fontSize: "0.72rem" }}>{batch.currentHash?.slice(0, 16)}…</span></div>
         </div>
         {batch.latitude && batch.longitude && (
           <iframe title="source-location" src={mapEmbedUrl} className="map-frame" loading="lazy" />

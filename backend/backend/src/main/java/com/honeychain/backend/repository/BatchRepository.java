@@ -12,5 +12,8 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     Optional<Batch> findByQrCode(String qrCode);
 
     long countByBeekeeper(User beekeeper);
+
     void deleteByBeekeeper(User beekeeper);
+    Optional<Batch> findTopByOrderByIdDesc();
+    List<Batch> findAllByOrderByIdAsc();
 }
