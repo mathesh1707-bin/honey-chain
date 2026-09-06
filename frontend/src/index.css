@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --parchment: #F1EAD9;
+  --hive-green: #2F4538;
+  --hive-green-dark: #22332A;
+  --gold: #C9922A;
+  --gold-dark: #A87A1F;
+  --rust: #A6402A;
+  --ink: #2A241C;
+  --ink-soft: #6B6152;
+  --border: #C9BBA0;
+  --white: #FBF8F1;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0;
+}
+
+a { color: inherit; }
+
+button, input, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.container { padding: 2.5rem 3rem; max-width: 960px; }
+
+@media (max-width: 640px) {
+  .container { padding: 1.5rem; }
+}
