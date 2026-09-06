@@ -35,18 +35,20 @@ export default function AdminDashboard() {
     fetchBeekeepers();
   }, []);
 
+  const handleDelete = async (e, id, name) => {
+    e.stopPropagation(); // don't trigger the row's navigate-to-detail click
+    if (!window.confirm(`Delete ${name}? This also removes their batches and hive readings.`)) return;
+    try {
+      await api.delete(`/admin/beekeepers/${id}`);
+      setBeekeepers((prev) => prev.filter((bk) => bk.id !== id));
+    } catch (err) {
+      alert(err.response?.data || "Couldn't delete.");
+    }
+  };
+
   if (loading) return <div className="container">Loading beekeepers…</div>;
   if (error) return <div className="container">{error}</div>;
-  const handleDelete = async (e, id, name) => {
-  e.stopPropagation(); // don't trigger the row's navigate-to-detail click
-  if (!window.confirm(`Delete ${name}? This also removes their batches and hive readings.`)) return;
-  try {
-    await api.delete(`/admin/beekeepers/${id}`);
-    setBeekeepers((prev) => prev.filter((bk) => bk.id !== id));
-  } catch (err) {
-    alert(err.response?.data || "Couldn't delete.");
-  }
-};
+
   return (
     <div className="container">
       <div className="page-head">
@@ -72,10 +74,13 @@ export default function AdminDashboard() {
                 {batchCounts[bk.id] ?? "–"}
                 <span className="label">batches</span>
               </div>
-              <button className="btn btn-outline" style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}
-  onClick={(e) => handleDelete(e, bk.id, bk.fullName)}>
-  Delete
-</button>
+              <button
+                className="btn btn-outline"
+                style={{ padding: "0.35rem 0.75rem", fontSize: "0.8rem" }}
+                onClick={(e) => handleDelete(e, bk.id, bk.fullName)}
+              >
+                Delete
+              </button>
             </div>
           ))}
         </div>

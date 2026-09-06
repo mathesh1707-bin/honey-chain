@@ -7,6 +7,9 @@ import com.honeychain.backend.model.User;
 import com.honeychain.backend.repository.BatchRepository;
 import com.honeychain.backend.repository.HiveReadingRepository;
 import com.honeychain.backend.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +63,16 @@ public class AdminUserService {
                 .orElseThrow(() -> new IllegalArgumentException("Beekeeper not found"));
         return new BeekeeperResponse(user);
     }
+
+    
+    @Transactional
     public void deleteBeekeeper(Long id) {
-    User user = userRepository.findById(id)
+        User user = userRepository.findById(id)
             .filter(u -> u.getRole() == Role.BEEKEEPER)
             .orElseThrow(() -> new IllegalArgumentException("Beekeeper not found"));
 
-    hiveReadingRepository.deleteByBeekeeper(user);
-    batchRepository.deleteByBeekeeper(user);
-    userRepository.delete(user);
-}
+        hiveReadingRepository.deleteByBeekeeper(user);
+        batchRepository.deleteByBeekeeper(user);
+        userRepository.delete(user);
+    }  
 }

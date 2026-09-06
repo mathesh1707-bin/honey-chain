@@ -134,7 +134,7 @@ label.field-label {
 .ledger { border-top: 1px solid var(--border); }
 .ledger-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 1.5rem;
   align-items: center;
   padding: 1.1rem 0;

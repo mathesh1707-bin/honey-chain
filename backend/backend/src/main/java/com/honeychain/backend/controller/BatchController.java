@@ -34,4 +34,12 @@ public class BatchController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/qr/{qrCode}")
+    public ResponseEntity<?> getQrImage(@PathVariable String qrCode) {
+        try {
+            return ResponseEntity.ok(batchService.getQrImage(qrCode));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("QR generation failed");
+        }
+    }
 }

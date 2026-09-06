@@ -59,4 +59,8 @@ public class BatchService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return batchRepository.findByBeekeeper(beekeeper);
     }
+    public String getQrImage(String qrCode) throws Exception {
+        String verifyUrl = publicBaseUrl + "/verify/" + qrCode;
+        return QrCodeGenerator.generateBase64(verifyUrl, 200);
+    }
 }

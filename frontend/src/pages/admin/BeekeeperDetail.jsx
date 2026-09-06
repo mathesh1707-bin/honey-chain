@@ -6,6 +6,7 @@ export default function BeekeeperDetail() {
   const { id } = useParams();
   const [beekeeper, setBeekeeper] = useState(null);
   const [batches, setBatches] = useState([]);
+  const [qrImages, setQrImages] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -28,6 +29,17 @@ export default function BeekeeperDetail() {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    batches.forEach((b) => {
+      if (!qrImages[b.qrCode]) {
+        api.get(`/admin/batches/qr/${b.qrCode}`).then((res) => {
+          setQrImages((prev) => ({ ...prev, [b.qrCode]: res.data }));
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [batches]);
+
   if (loading) return <div className="container">Loading…</div>;
   if (error || !beekeeper) return <div className="container">{error || "Beekeeper not found."}</div>;
 
@@ -46,7 +58,7 @@ export default function BeekeeperDetail() {
       ) : (
         <table className="record-table">
           <thead>
-            <tr><th>Date</th><th>Quantity</th><th>QR code</th></tr>
+            <tr><th>Date</th><th>Quantity</th><th>QR code</th><th>QR</th></tr>
           </thead>
           <tbody>
             {batches.map((b) => (
@@ -54,6 +66,17 @@ export default function BeekeeperDetail() {
                 <td>{b.dateCreated}</td>
                 <td>{b.quantityKg} kg</td>
                 <td className="code">{b.qrCode}</td>
+                <td>
+                  {qrImages[b.qrCode] ? (
+                    <img
+                      src={`data:image/png;base64,${qrImages[b.qrCode]}`}
+                      alt="QR"
+                      style={{ width: 48, height: 48 }}
+                    />
+                  ) : (
+                    "…"
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
