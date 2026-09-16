@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+
+@theme {
+  --color-cream: #FFF1D1;
+  --color-cream-deep: #FBE3AE;
+  --color-ink: #2B140A;
+  --color-red: #DF301C;
+  --color-orange: #FF9100;
+  --color-leaf: #4C9A3A;
+  --font-display: "Fraunces", serif;
+  --font-sans: "Manrope", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+body {
+  background-color: #171310;
+  font-family: "Manrope", sans-serif;
+}
+
+@keyframes ember-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+.animate-ember { animation: ember-pulse 2.2s ease-in-out infinite; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.animate-spin-slow { animation: spin-slow 1.6s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ember, .animate-spin-slow { animation: none; }
+}
